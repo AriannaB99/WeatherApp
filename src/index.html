@@ -8,10 +8,7 @@
 	</head>
 
 	<body>
-		<div id = "app">
-		{{message}}
-		</div>
-		
+	
 		<div id = "response"> </div>
 	</body>
 </html>
@@ -19,26 +16,76 @@
 <script>
  var api_key = 'cd0fcc9ee9e5b3710c59881c23299809';
  var api_key_weather = '1725f80349b6e441b93de80777b0c6dc';
-	var app = new Vue ({
-	el: '#app', data: {message: 'Hello Vue!'}})
+ var daily_results = document.getElementById('response');
 	
  fetch('http://api.ipstack.com/check?access_key=' + api_key)
   .then(function(response) {
     return response.json();
   })
   .then(function(myJson) {
-	longitude = Number(myJson["longitude"]);
-	latitude = Number(myJson["latitude"]);
-	console.log(longitude);
-	console.log(latitude);
-	fetch('http://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude + '&appid='+api_key_weather)
+	let longitude = Number(myJson["longitude"]);
+	let latitude = Number(myJson["latitude"]);
+	fetch('http://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude + '&appid='+api_key_weather + "&units=imperial")
   .then(function(response) {
     return response.json();
   })
   .then(function(myJson) {
-	console.log(myJson);
+	//console.log(JSON.stringify(myJson));
+	let current_temp = Number(myJson["main"]["temp"]);
+	let current_condition = (JSON.stringify(myJson["weather"][0]["description"])).slice(1, -1);
+	let current_humidity = Number(myJson["main"]["humidity"]);
+	let current_pressure = Number(myJson["main"]["pressure"]);
+	let current_date = Number(myJson["dt"]);
+	let current_date_string= convert(current_date);
+	
+	fetch('http://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude + '&appid='+api_key_weather + "&units=imperial")
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+	//console.log(JSON.stringify(myJson));
+	//console.log(current_day);
+
+	var daily_div = document.createElement('div');
+	daily_div.id = "daily";
+	console.log(daily_div.id);
+	var linebreak = document.createElement('br');
+	var heading = document.createElement('h2');
+	heading.textContent = "Conditions on " + current_date_string;
+	var para1 = document.createElement('p');
+	para1.textContent = "Temperature:  " + current_temp + " *F ";
+	para1.appendChild(linebreak);
+	var para2 = document.createElement('p');
+	para2.textContent = "Condition:  " + current_condition;
+	para2.appendChild(linebreak);
+	var para3 = document.createElement('p');
+	para3.textContent = " Humidity:  " + current_humidity + "% ";
+	para3.appendChild(linebreak);
+	var para4 = document.createElement('p');
+	para4.textContent = " Pressure:  " + current_pressure + " hpa";
+	para4.appendChild(linebreak);
+	daily_div.appendChild(heading);
+	daily_div.appendChild(para1);
+	daily_div.appendChild(para2);
+	daily_div.appendChild(para3);
+	daily_div.appendChild(para4);
+	daily_results.appendChild(daily_div);
 
 	
 	});
+	});
   });
+  function convert(unixtimestamp){
+ var months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+ var date = new Date(unixtimestamp*1000);
+ var year = date.getFullYear();
+ var month = months_arr[date.getMonth()];
+ var day = date.getDate();
+ var hours = date.getHours();
+ var minutes = "0" + date.getMinutes();
+ var seconds = "0" + date.getSeconds();
+ var convdataTime = month+'-'+day+'-'+year+' at '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+ return convdataTime;
+ 
+}
 </script>
