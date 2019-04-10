@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" href="style.css" type="text/css"/>
+		<title>Weather Voting API </title>
+	</head>
+
+	<body>
+		<div id = "app">
+		{{message}}
+		</div>
+		
+		<div id = "response"> </div>
+	</body>
+</html>
+
+<script>
+ var api_key = 'cd0fcc9ee9e5b3710c59881c23299809';
+ var api_key_weather = '1725f80349b6e441b93de80777b0c6dc';
+	var app = new Vue ({
+	el: '#app', data: {message: 'Hello Vue!'}})
+	
+ fetch('http://api.ipstack.com/check?access_key=' + api_key)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+	longitude = Number(myJson["longitude"]);
+	latitude = Number(myJson["latitude"]);
+	console.log(longitude);
+	console.log(latitude);
+	fetch('http://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude + '&appid='+api_key_weather)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+	console.log(myJson);
+
+	
+	});
+  });
+</script>
