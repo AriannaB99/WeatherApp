@@ -2,13 +2,32 @@
 	border-radius: 15px;
 	background: #193e84;
 	width: 500px;
-	border: 4px, solid, #bdbfc1, rounded;
+	margin: 0 auto;
 	color: white;
 	font-family: "Noto Sans", sans-serif;
 	text-align: center;
+	display:block;
 }
 
 #response {
-	display: flex;
-justify-content: center;
+	display: block;
+}
+#general {
+	text-align: center;
+}
+#response2 {
+	display: block;
+}
+
+#day {
+	border-radius: 15px;
+	background: #72ad4f;
+	width: 300px;
+	border:2px solid gray;
+	color: white;
+	font-family: "Noto Sans", sans-serif;
+	text-align: center;
+	display: inline-block;
+	margin: 10px;
+	
 }
