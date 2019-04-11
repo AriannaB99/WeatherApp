@@ -1,6 +1,10 @@
 
  var api_key = 'cd0fcc9ee9e5b3710c59881c23299809';
  var api_key_weather = '1725f80349b6e441b93de80777b0c6dc';
+ var loading = document.createElement('h1');
+ loading.id = "loading";
+ loading.textContent = "Loading Information...";
+ document.body.appendChild(loading);
 	
  fetch('http://api.ipstack.com/check?access_key=' + api_key)
   .then(function(response) {
@@ -14,6 +18,8 @@
     return response.json();
   })
   .then(function(myJson) {
+	 var e = document.getElementById("loading");
+	 e.parentNode.removeChild(e);
 	  daily_append(myJson);
 	
 	
