@@ -19,7 +19,7 @@
 	display: block;
 }
 
-#day {
+.day {
 	border-radius: 15px;
 	background: #72ad4f;
 	width: 300px;

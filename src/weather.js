@@ -1,69 +1,49 @@
-
- var api_key = 'cd0fcc9ee9e5b3710c59881c23299809';
- var api_key_weather = '1725f80349b6e441b93de80777b0c6dc';
- var loading = document.createElement('h1');
- loading.id = "loading";
- loading.textContent = "Loading Information...";
- document.body.appendChild(loading);
+var app = new Vue({
+  el: '#app',
+  data: {
+	  forecast_list: null,
+	  daily_list: null,
+  },
+  methods: {
+    cycle: function () {
+      console.log("clicked");
+    }
+  },
+  created(){
+	 var api_key = 'cd0fcc9ee9e5b3710c59881c23299809';
+	 var api_key_weather = '1725f80349b6e441b93de80777b0c6dc';
+		
+	 fetch('http://api.ipstack.com/check?access_key=' + api_key)
+	  .then(function(response) {
+		return response.json();
+	  })
+	  .then(function(myJson) {
+		let longitude = Number(myJson["longitude"]);
+		let latitude = Number(myJson["latitude"]);
+		fetch('http://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude + '&appid='+api_key_weather + "&units=imperial")
+	  .then(function(response) {
+		return response.json();
+	  })
+	  .then(function(myJson) {
+		  app.daily_list = myJson;
+		  console.log(app.daily_list);
+		
+		
+		fetch('http://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude + '&appid='+api_key_weather + "&units=imperial")
+	  .then(function(response) {
+		return response.json();
+	  })
+	  .then(function(myJson) {
+		app.forecast_list = myJson;
+		console.log(app.forecast_list);
 	
- fetch('http://api.ipstack.com/check?access_key=' + api_key)
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson) {
-	let longitude = Number(myJson["longitude"]);
-	let latitude = Number(myJson["latitude"]);
-	fetch('http://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude + '&appid='+api_key_weather + "&units=imperial")
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson) {
-	 var e = document.getElementById("loading");
-	 e.parentNode.removeChild(e);
-	  daily_append(myJson);
-	
-	
-	fetch('http://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude + '&appid='+api_key_weather + "&units=imperial")
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson) {
-	output = document.getElementById("response2");
-	let count = Number(myJson["cnt"]);
-	console.log(count);
-	
-	for ( i = 0; i < count; i++) {
-		var div_5day = document.createElement('div');
-		div_5day.id = "day";
-		let current_day = convert(Number(myJson["list"][i]["dt"]));
-		let condition = (JSON.stringify(myJson["list"][i]["weather"][0]["description"])).slice(1, -1);
-		let temp = Number(myJson["list"][i]["main"]["temp"]);
-		let humid = Number(myJson["list"][i]["main"]["humidity"]);
-		let pressure = Number(myJson["list"][i]["main"]["pressure"]);
-		var p = document.createElement('p');
-		p.textContent = current_day;
-		var p1 = document.createElement('p');
-		p1.textContent = "Condition:  "+ condition;
-		var p2 = document.createElement('p');
-		p2.textContent = "Temperature:  " + temp + " *F";
-		var p3 = document.createElement('p');
-		p3.textContent = "Humidity:  " + humid + "%";
-		var p4 = document.createElement('p');
-		p4.textContent = "Pressure:  " + pressure + " hpa";
-		var linebreak = document.createElement('br');
-		div_5day.appendChild(p);
-		div_5day.appendChild(p2);
-		div_5day.appendChild(p1);
-		div_5day.appendChild(p3);
-		div_5day.appendChild(p4);
-		//div_5day.appendChild(linebreak);
-		response.appendChild(div_5day);
+		
+		});
+		});
+	  });
 	}
-	
-	});
-	});
-  });
-  
+})
+
   
 function convert(timestamp) {
 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];

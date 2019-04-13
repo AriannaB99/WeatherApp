@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <html lang="en">
+	
 	<head>
 		<meta charset="utf-8"/>
 		<link rel="stylesheet" href="style.css" type="text/css"/>
 		<title>Weather Voting API </title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	</head>
 
 	<body>
+		
+		<div id = "general">
+			<div id ="app">
+				<h1 v-if="(forecast_list == null) && (daily_list == null)">Loading... </h1>
+				<div v-else> 
+					{{daily_list.main}}
+				</div>
+			</div>
+		</div>
 		<script src="weather.js"></script>
-		<div id = "general"><div id = "response"></div>
-		<div id = "response2"> </div></div>
 	</body>
-</html>
 
+</html>
