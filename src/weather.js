@@ -73,7 +73,7 @@ var app = new Vue({
 		app.forecast_list = myJson;
 //console.log(app.forecast_list);
 		app.count = Number(app.forecast_list.list.length);
-		app.default_count = app.count;
+		app.default_count = app.count-1;
 		for (i = 0; i < app.count; i++) {
 			app.dates.push(convert(Number(app.forecast_list.list[i].dt)));
 			//app.className.push("day_likely
