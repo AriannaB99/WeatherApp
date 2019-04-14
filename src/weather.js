@@ -1,18 +1,49 @@
 var app = new Vue({
   el: '#app',
   data: {
+	  likely_count: 0,
+	  unlikely_count: 0,
+	  default_count: 0,
 	  forecast_list: null,
 	  daily_list: null,
 	  curr_date: null,
 	  count: 0,
 	  dates: [],
+	  styles:[], 
+	  styleObject: {
+		'border-radius': '15px',
+		background: 'gray',
+		width: '300px',
+		border:'2px solid gray',
+		color: 'white',
+		'font-family': '"Noto Sans", sans-serif',
+		'text-align': 'center',
+		display: 'inline-block',
+		margin: '10px'},
   },
   methods: {
-    cycle: function () {
-      console.log("clicked");
+    cycle: function (n) {
+      if (app.styles[n].background == "gray") {
+		  app.styles[n].background = "green";
+		  app.default_count--;
+		  app.likely_count++;
+		  //console.log(n);
     }
+	else if (app.styles[n].background == "green") {
+		  app.styles[n].background = "red";
+		  //console.log(app.styleObject);
+		  app.likely_count--;
+		  app.unlikely_count++;
+    }
+	else if (app.styles[n].background == "red") {
+		  app.styles[n].background = "gray";
+		  //console.log(app.styleObject);
+		  app.unlikely_count--;
+		  app.default_count++;
+    }
+	
   }
-	,
+  },
   created(){
 	 var api_key = 'cd0fcc9ee9e5b3710c59881c23299809';
 	 var api_key_weather = '1725f80349b6e441b93de80777b0c6dc';
@@ -40,10 +71,14 @@ var app = new Vue({
 	  })
 	  .then(function(myJson) {
 		app.forecast_list = myJson;
-		console.log(app.forecast_list);
+//console.log(app.forecast_list);
 		app.count = Number(app.forecast_list.list.length);
+		app.default_count = app.count;
 		for (i = 0; i < app.count; i++) {
 			app.dates.push(convert(Number(app.forecast_list.list[i].dt)));
+			//app.className.push("day_likely
+			var copy = Object.assign({}, app.styleObject);
+			app.styles.push(copy);
 		}
 	
 		});

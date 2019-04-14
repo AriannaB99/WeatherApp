@@ -14,6 +14,9 @@
 			<div id ="app">
 				<h1 v-if="(forecast_list == null) && (daily_list == null)">Loading... </h1>
 				<div v-else>
+					<h2 id = "likely"> Likely Count: {{likely_count}} </h2>
+					<h2 id = "unlikely"> Unlikely Count: {{unlikely_count}} </h2>
+					<h2 id = "def"> Default Count: {{default_count}} </h2>
 					<div id = "daily">
 					<h2>Conditions on {{curr_date}}</h2>
 					Temperature: {{daily_list.main.temp}} *F <br>
@@ -22,13 +25,16 @@
 					Condition: {{daily_list.weather[0].description}}
 					</div>
 					<div v-for = "n in count">
-						<span v-if = "forecast_list.list[n] != null" class = "day">
-						Condition on {{dates[n]}} <br>
-						Temperature: {{forecast_list.list[n].main.temp}} *F <br>
-						Humidity: {{forecast_list.list[n].main.humidity}}% <br>
-						Pressure: {{forecast_list.list[n].main.pressure}} hpa<br>
-						Condition: {{forecast_list.list[n].weather[0].description}}
-					
+						<span v-if = "forecast_list.list[n] != null">
+							<span v-on:click="cycle(n-1, $event)">
+							<div v-bind:style = "styles[n-1]" >
+							Condition on {{dates[n]}} <br>
+							Temperature: {{forecast_list.list[n].main.temp}} *F <br>
+							Humidity: {{forecast_list.list[n].main.humidity}}% <br>
+							Pressure: {{forecast_list.list[n].main.pressure}} hpa<br>
+							Condition: {{forecast_list.list[n].weather[0].description}}
+							</div>
+							</span>
 						</span>
 					</div>
 					

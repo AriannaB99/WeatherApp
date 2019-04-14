@@ -17,9 +17,9 @@
 }
 
 
-.day {
+.day_likely {
 	border-radius: 15px;
-	background: #72ad4f;
+	background: gray;
 	width: 300px;
 	border:2px solid gray;
 	color: white;
