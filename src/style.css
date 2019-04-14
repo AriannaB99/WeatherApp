@@ -9,23 +9,27 @@
 	display:block;
 }
 
-#response {
-	display: block;
-}
 #general {
 	text-align: center;
-}
-
-
-.day_likely {
-	border-radius: 15px;
-	background: gray;
-	width: 300px;
-	border:2px solid gray;
-	color: white;
-	font-family: "Noto Sans", sans-serif;
-	text-align: center;
-	display: inline-block;
-	margin: 10px;
+	width: auto;
 	
 }
+
+#likely{
+	color: green;
+	font-family: "Noto Sans", sans-serif;
+}
+
+#unlikely{
+	color: red;
+	font-family: "Noto Sans", sans-serif;
+}
+#def {
+	color: gray;
+	font-family: "Noto Sans", sans-serif;
+}
+
+div {
+	display: inline-block;
+}
+
