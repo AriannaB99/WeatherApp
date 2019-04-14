@@ -3,12 +3,16 @@ var app = new Vue({
   data: {
 	  forecast_list: null,
 	  daily_list: null,
+	  curr_date: null,
+	  count: 0,
+	  dates: [],
   },
   methods: {
     cycle: function () {
       console.log("clicked");
     }
-  },
+  }
+	,
   created(){
 	 var api_key = 'cd0fcc9ee9e5b3710c59881c23299809';
 	 var api_key_weather = '1725f80349b6e441b93de80777b0c6dc';
@@ -26,7 +30,8 @@ var app = new Vue({
 	  })
 	  .then(function(myJson) {
 		  app.daily_list = myJson;
-		  console.log(app.daily_list);
+		  app.curr_date = convert(Number(app.daily_list.dt));
+//console.log(app.daily_list);
 		
 		
 		fetch('http://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude + '&appid='+api_key_weather + "&units=imperial")
@@ -36,15 +41,19 @@ var app = new Vue({
 	  .then(function(myJson) {
 		app.forecast_list = myJson;
 		console.log(app.forecast_list);
+		app.count = Number(app.forecast_list.list.length);
+		for (i = 0; i < app.count; i++) {
+			app.dates.push(convert(Number(app.forecast_list.list[i].dt)));
+		}
 	
-		
 		});
 		});
 	  });
-	}
+	
+}
 })
 
-  
+
 function convert(timestamp) {
 var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var d = new Date(timestamp * 1000),
@@ -71,38 +80,7 @@ var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov',
 	time = month + " " + dd + " " + yyyy +' at ' + h + ':' + min + ' ' + ampm;
 		
 	return time;
-}
+  }
 
-function daily_append(myJson) {
- var daily_results = document.getElementById('response');
-	//console.log(JSON.stringify(myJson));
-	let current_temp = Number(myJson["main"]["temp"]);
-	let current_condition = (JSON.stringify(myJson["weather"][0]["description"])).slice(1, -1);
-	let current_humidity = Number(myJson["main"]["humidity"]);
-	let current_pressure = Number(myJson["main"]["pressure"]);
-	let current_date = Number(myJson["dt"]);
-	let current_date_string= convert(current_date);
-	var daily_div = document.createElement('div');
-	daily_div.id = "daily";
-	var linebreak = document.createElement('br');
-	var heading = document.createElement('h2');
-	heading.textContent = "Conditions on " + current_date_string;
-	var para1 = document.createElement('p');
-	para1.textContent = "Temperature:  " + current_temp + " *F ";
-	para1.appendChild(linebreak);
-	var para2 = document.createElement('p');
-	para2.textContent = "Condition:  " + current_condition;
-	para2.appendChild(linebreak);
-	var para3 = document.createElement('p');
-	para3.textContent = " Humidity:  " + current_humidity + "% ";
-	para3.appendChild(linebreak);
-	var para4 = document.createElement('p');
-	para4.textContent = " Pressure:  " + current_pressure + " hpa";
-	para4.appendChild(linebreak);
-	daily_div.appendChild(heading);
-	daily_div.appendChild(para1);
-	daily_div.appendChild(para2);
-	daily_div.appendChild(para3);
-	daily_div.appendChild(para4);
-	daily_results.appendChild(daily_div);
-}
+  
+

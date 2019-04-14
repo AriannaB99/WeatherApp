@@ -13,8 +13,25 @@
 		<div id = "general">
 			<div id ="app">
 				<h1 v-if="(forecast_list == null) && (daily_list == null)">Loading... </h1>
-				<div v-else> 
-					{{daily_list.main}}
+				<div v-else>
+					<div id = "daily">
+					<h2>Conditions on {{curr_date}}</h2>
+					Temperature: {{daily_list.main.temp}} *F <br>
+					Humidity: {{daily_list.main.humidity}}% <br>
+					Pressure: {{daily_list.main.pressure }} hpa <br>
+					Condition: {{daily_list.weather[0].description}}
+					</div>
+					<div v-for = "n in count">
+						<span v-if = "forecast_list.list[n] != null" class = "day">
+						Condition on {{dates[n]}} <br>
+						Temperature: {{forecast_list.list[n].main.temp}} *F <br>
+						Humidity: {{forecast_list.list[n].main.humidity}}% <br>
+						Pressure: {{forecast_list.list[n].main.pressure}} hpa<br>
+						Condition: {{forecast_list.list[n].weather[0].description}}
+					
+						</span>
+					</div>
+					
 				</div>
 			</div>
 		</div>
